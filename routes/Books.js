@@ -12,7 +12,7 @@ books.use(cors());
 
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
-    callback(null, "uploads/");
+    callback(null, "./uploads/");
   },
   filename: (req, file, callback) => {
     var filename = `${Date.now()}-${file.originalname}`;

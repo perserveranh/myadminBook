@@ -90,7 +90,7 @@ books.post(
   middleware.checkToken,
   multer({ storage: storage }).single("imgUrl"),
   (req, res) => {
-    const filePath = `${req.file.destination}${req.file.filename}`;
+    const filePath = "/" + `${req.file.destination}${req.file.filename}`;
     const bookData = {
       name: req.body.name,
       imgUrl: filePath,

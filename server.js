@@ -2,13 +2,10 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const serveIndex = require("serve-index");
-const path = require("path");
 const config = require("./config");
 const app = express();
-const db = require("./database/db");
 const port = process.env.PORT || 8000;
 
-db.sequelize.sync();
 app.use(cors());
 app.use(
   bodyParser.urlencoded({

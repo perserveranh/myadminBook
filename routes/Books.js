@@ -1,9 +1,7 @@
 const express = require("express");
 const multer = require("multer");
-var pdf = require("html-pdf");
 const books = express.Router();
 const cors = require("cors");
-const path = require("path");
 const middleware = require("../middlewares");
 const config = require("../config");
 
@@ -89,9 +87,12 @@ books.post(
   middleware.checkToken,
   upload.single("BookImage"),
   (req, res) => {
-    console.log("storage location is ", req.hostname + "/" + req.file.path);
     const filePath =
-      `${req.hostname}` + "/" + `${req.file.path.replace("public/", "")}`;
+      `${config.host}` +
+      "/" +
+      "file" +
+      "/" +
+      `${req.file.path.replace("public/", "")}`;
     const bookData = {
       BookName: req.body.BookName,
       BookImage: filePath,
@@ -116,10 +117,12 @@ books.put(
   middleware.checkToken,
   upload.single("BookPdf"),
   (req, res) => {
-    console.log("storage location is ", req.hostname + "/" + req.file.path);
-    console.log("req", req);
     const filePath =
-      `${req.hostname}` + "/" + `${req.file.path.replace("public/", "")}`;
+      `${config.host}` +
+      "/" +
+      "file" +
+      "/" +
+      `${req.file.path.replace("public/", "")}`;
     Book.update(
       {
         BookPdf: filePath
@@ -146,9 +149,12 @@ books.put(
   middleware.checkToken,
   upload.single("BookImage"),
   (req, res) => {
-    console.log("storage location is ", req.hostname + "/" + req.file.path);
     const filePath =
-      `${req.hostname}` + "/" + `${req.file.path.replace("public/", "")}`;
+      `${config.host}` +
+      "/" +
+      "file" +
+      "/" +
+      `${req.file.path.replace("public/", "")}`;
     Book.update(
       {
         BookName: req.body.BookName,

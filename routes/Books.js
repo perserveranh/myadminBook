@@ -19,7 +19,10 @@ const storage = multer.diskStorage({
     callback(null, filename);
   }
 });
-const upload = multer({ storage: storage });
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: config.maxSize }
+});
 
 books.get("/", middleware.checkToken, (req, res) => {
   const page = +req.query.page;

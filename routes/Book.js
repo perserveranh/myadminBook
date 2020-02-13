@@ -1,12 +1,12 @@
 const express = require("express");
 const multer = require("multer");
-const books = express.Router();
+const book = express.Router();
 const cors = require("cors");
 const middleware = require("../middlewares");
 const config = require("../config");
 
 const Book = require("../models/Book");
-books.use(cors());
+book.use(cors());
 
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
@@ -22,7 +22,7 @@ const upload = multer({
   limits: { fileSize: config.maxSize }
 });
 
-books.get("/", middleware.checkToken, (req, res) => {
+book.get("/all", middleware.checkToken, (req, res) => {
   const page = +req.query.page;
   const pageSize = +req.query.pageSize;
   const query =
@@ -42,7 +42,7 @@ books.get("/", middleware.checkToken, (req, res) => {
     });
 });
 
-books.get("/api", (req, res) => {
+book.get("/api", (req, res) => {
   const page = +req.query.page;
   const pageSize = +req.query.pageSize;
   const query =
@@ -62,7 +62,7 @@ books.get("/api", (req, res) => {
     });
 });
 
-books.get("/:id", (req, res) => {
+book.get("/:id", (req, res) => {
   Book.findOne({
     where: {
       BookID: req.params.id
@@ -82,7 +82,7 @@ books.get("/:id", (req, res) => {
     });
 });
 
-books.post(
+book.post(
   "/",
   middleware.checkToken,
   upload.single("BookImage"),
@@ -112,7 +112,7 @@ books.post(
   }
 );
 
-books.put(
+book.put(
   "/pdf/:id",
   middleware.checkToken,
   upload.single("BookPdf"),
@@ -144,7 +144,7 @@ books.put(
   }
 );
 
-books.put(
+book.put(
   "/:BookID",
   middleware.checkToken,
   upload.single("BookImage"),
@@ -180,7 +180,7 @@ books.put(
   }
 );
 
-books.delete("/:id", middleware.checkToken, (req, res) => {
+book.delete("/:id", middleware.checkToken, (req, res) => {
   Book.destroy({
     where: {
       id: req.params.id
@@ -204,7 +204,7 @@ books.delete("/:id", middleware.checkToken, (req, res) => {
     });
 });
 
-books.delete("/", middleware.checkToken, (req, res) => {
+book.delete("/", middleware.checkToken, (req, res) => {
   Book.destroy({
     where: {},
     truncate: false
@@ -219,4 +219,4 @@ books.delete("/", middleware.checkToken, (req, res) => {
     });
 });
 
-module.exports = books;
+module.exports = book;

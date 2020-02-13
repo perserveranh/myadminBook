@@ -50,14 +50,14 @@ app.use((req, res, next) => {
 });
 
 const Users = require("./routes/Users");
-const Books = require("./routes/Books");
+const Book = require("./routes/Book");
 
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to member application." });
 });
 
 app.use("/users", Users);
-app.use("/books", Books);
+app.use("/book", Book);
 
 app.listen(port, (req, res) => {
   console.log({ message: "Server is running on port: " + port });

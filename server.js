@@ -2,10 +2,13 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const serveIndex = require("serve-index");
+const path = require("path");
 const config = require("./config");
 const app = express();
+const db = require("./database/db");
 const port = process.env.PORT || 8000;
 
+db.sequelize.sync();
 app.use(cors());
 app.use(
   bodyParser.urlencoded({
@@ -47,14 +50,14 @@ app.use((req, res, next) => {
 });
 
 const Users = require("./routes/Users");
-const Book = require("./routes/Book");
+const Books = require("./routes/Books");
 
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to member application." });
 });
 
 app.use("/users", Users);
-app.use("/book", Book);
+app.use("/books", Books);
 
 app.listen(port, (req, res) => {
   console.log({ message: "Server is running on port: " + port });

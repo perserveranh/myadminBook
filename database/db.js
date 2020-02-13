@@ -22,6 +22,6 @@ sequelize
     console.error("Unable to connect to the database:", err);
   });
 
-db.sequelize.sync();
+db.sequelize = sequelize;
 
 module.exports = db;

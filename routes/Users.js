@@ -12,16 +12,16 @@ users.use(cors());
 users.post("/register", (req, res) => {
   const today = new Date();
   const userData = {
-    first_name: req.body.first_name,
-    last_name: req.body.last_name,
-    user_name: req.body.user_name,
+    firstname: req.body.first_name,
+    lastname: req.body.last_name,
+    username: req.body.username,
     password: req.body.password,
     created: today
   };
 
   User.findOne({
     where: {
-      user_name: req.body.user_name
+      username: req.body.username
     }
   })
     //TODO bcrypt
@@ -31,7 +31,7 @@ users.post("/register", (req, res) => {
           userData.password = hash;
           User.create(userData)
             .then(user => {
-              res.json({ status: user.user_name + " Registered!" });
+              res.json({ status: user.username + " Registered!" });
             })
             .catch(err => {
               res.send("error: " + err);
@@ -49,7 +49,7 @@ users.post("/register", (req, res) => {
 users.post("/login", (req, res) => {
   User.findOne({
     where: {
-      user_name: req.body.user_name
+      username: req.body.username
     }
   })
     .then(user => {

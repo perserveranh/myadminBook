@@ -12,13 +12,14 @@ books.use(cors());
 
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
-    callback(null, "./uploads/");
+    callback(null, "./public/uploads");
   },
   filename: (req, file, callback) => {
-    var filename = `${Date.now()}-${file.originalname}`;
+    var filename = `${file.fieldname}-${Date.now()}${file.originalname}`;
     callback(null, filename);
   }
 });
+const upload = multer({ storage: storage });
 
 books.get("/", middleware.checkToken, (req, res) => {
   const page = +req.query.page;
@@ -63,7 +64,7 @@ books.get("/api", (req, res) => {
 books.get("/:id", (req, res) => {
   Book.findOne({
     where: {
-      id: req.params.id
+      BookID: req.params.id
     }
   })
     .then(book => {
@@ -80,23 +81,19 @@ books.get("/:id", (req, res) => {
     });
 });
 
-books.get("/generatePdf/:id", async (req, res, next) => {
-  const id = req.params.id;
-  const documents = await Book.findAll({ where: { id } });
-});
-
 books.post(
   "/",
   middleware.checkToken,
-  multer({ storage: storage }).single("imgUrl"),
+  upload.single("BookImage"),
   (req, res) => {
-    const filePath = "/" + `${req.file.destination}${req.file.filename}`;
+    console.log("storage location is ", req.hostname + "/" + req.file.path);
+    const filePath = `${req.hostname}` + "/" + `${req.file.path}`;
     const bookData = {
-      name: req.body.name,
-      imgUrl: filePath,
-      linkUrl: req.body.linkUrl,
-      author: req.body.author,
-      description: req.body.description
+      BookName: req.body.BookName,
+      BookImage: filePath,
+      BookLink: req.body.BookLink,
+      authorID: req.body.authorID,
+      BookDescription: req.body.BookDescription
     };
     Book.create(bookData)
       .then(book => {
@@ -111,26 +108,21 @@ books.post(
 );
 
 books.put(
-  "/uploadpdf/:id",
+  "/pdf/:id",
   middleware.checkToken,
-  multer({ storage: storage }).single("filepdf"),
+  upload.single("BookPdf"),
   (req, res) => {
+    console.log("storage location is ", req.hostname + "/" + req.file.path);
+    console.log("req", req);
     const filePath =
-      "file://" +
-      path.join(__dirname).replace("routes", "") +
-      `${req.file.path}`;
-    if (!filePath) {
-      const error = new Error("Please upload a file");
-      error.httpStatusCode = 400;
-      return next(error);
-    }
+      `${req.hostname}` + "/" + `${req.file.path.replace("public/", "")}`;
     Book.update(
       {
-        filepdf: filePath
+        BookPdf: filePath
       },
       {
         where: {
-          id: req.params.id
+          BookID: req.params.id
         }
       }
     )
@@ -146,25 +138,23 @@ books.put(
 );
 
 books.put(
-  "/:id",
+  "/:BookID",
   middleware.checkToken,
-  multer({ storage: storage }).single("imgUrl"),
+  upload.single("BookImage"),
   (req, res) => {
-    const filePath =
-      "file://" +
-      path.join(__dirname).replace("routes", "") +
-      `${req.file.destination}${req.file.filename}`;
+    console.log("storage location is ", req.hostname + "/" + req.file.path);
+    const filePath = `${req.hostname}` + "/" + `${req.file.path}`;
     Book.update(
       {
-        name: req.body.name,
-        imgUrl: filePath,
-        linkUrl: req.body.linkUrl,
-        author: req.body.author,
-        description: req.body.description
+        BookName: req.body.BookName,
+        BookImage: filePath,
+        BookLink: req.body.BookLink,
+        authorID: req.body.authorID,
+        BookDescription: req.body.BookDescription
       },
       {
         where: {
-          id: req.params.id
+          BookID: req.params.BookID
         }
       }
     )

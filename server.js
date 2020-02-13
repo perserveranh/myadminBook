@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const serveIndex = require("serve-index");
 const path = require("path");
 const app = express();
 const db = require("./database/db");
@@ -14,8 +15,13 @@ app.use(
   })
 );
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, "public")));
-app.use(express.static(path.join(__dirname, "uploads")));
+
+// app.use(express.static("public"));
+app.use(
+  "/file",
+  express.static("public"),
+  serveIndex("public", { icons: true })
+);
 
 app.use((req, res, next) => {
   //allow cross origin requests

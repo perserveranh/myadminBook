@@ -4,35 +4,39 @@ const db = require("../database/db.js");
 module.exports = db.sequelize.define(
   "books",
   {
-    id: {
+    BookID: {
       type: Sequelize.INTEGER,
       primaryKey: true,
       autoIncrement: true
     },
-    name: {
+    BookName: {
       type: Sequelize.STRING(200)
     },
-    imgUrl: {
+    BookImage: {
       type: Sequelize.STRING,
       allowNull: true,
       validate: {
         notEmpty: true
       }
     },
-    linkUrl: {
+    BookLink: {
       type: Sequelize.STRING,
       validate: {
         isUrl: true,
         notEmpty: true
       }
     },
-    author: {
-      type: Sequelize.STRING
+    authorID: {
+      type: Sequelize.INTEGER
     },
-    filepdf: {
-      type: Sequelize.STRING
+    BookPdf: {
+      type: Sequelize.STRING,
+      allowNull: true,
+      validate: {
+        notEmpty: true
+      }
     },
-    description: {
+    BookDescription: {
       type: Sequelize.STRING
     }
   },

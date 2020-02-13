@@ -4,18 +4,18 @@ const db = require("../database/db.js");
 module.exports = db.sequelize.define(
   "users",
   {
-    id: {
+    userID: {
       type: Sequelize.INTEGER,
       primaryKey: true,
       autoIncrement: true
     },
-    first_name: {
+    firstname: {
       type: Sequelize.STRING
     },
-    last_name: {
+    lastname: {
       type: Sequelize.STRING
     },
-    user_name: {
+    username: {
       type: Sequelize.STRING
     },
     password: {

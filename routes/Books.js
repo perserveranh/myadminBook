@@ -88,7 +88,7 @@ books.post(
   upload.single("BookImage"),
   (req, res) => {
     const filePath =
-      `${config.host}` +
+      `${config.hostServer}` +
       "/" +
       "file" +
       "/" +
@@ -118,7 +118,7 @@ books.put(
   upload.single("BookPdf"),
   (req, res) => {
     const filePath =
-      `${config.host}` +
+      `${config.hostServer}` +
       "/" +
       "file" +
       "/" +
@@ -150,7 +150,7 @@ books.put(
   upload.single("BookImage"),
   (req, res) => {
     const filePath =
-      `${config.host}` +
+      `${config.hostServer}` +
       "/" +
       "file" +
       "/" +

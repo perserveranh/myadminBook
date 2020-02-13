@@ -3,6 +3,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const serveIndex = require("serve-index");
 const path = require("path");
+const config = require("./config");
 const app = express();
 const db = require("./database/db");
 const port = process.env.PORT || 8000;
@@ -11,10 +12,11 @@ db.sequelize.sync();
 app.use(cors());
 app.use(
   bodyParser.urlencoded({
+    limit: config.limit,
     extended: false
   })
 );
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: config.limit }));
 
 // app.use(express.static("public"));
 app.use(

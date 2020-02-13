@@ -4,7 +4,7 @@ const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const middleware = require("../middlewares");
-const config = require("../config/auth.config");
+const config = require("../config");
 
 const User = require("../models/User");
 users.use(cors());

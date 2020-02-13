@@ -5,7 +5,7 @@ const books = express.Router();
 const cors = require("cors");
 const path = require("path");
 const middleware = require("../middlewares");
-const config = require("../config/auth.config");
+const config = require("../config");
 
 const Book = require("../models/Book");
 books.use(cors());
@@ -87,7 +87,8 @@ books.post(
   upload.single("BookImage"),
   (req, res) => {
     console.log("storage location is ", req.hostname + "/" + req.file.path);
-    const filePath = `${req.hostname}` + "/" + `${req.file.path}`;
+    const filePath =
+      `${req.hostname}` + "/" + `${req.file.path.replace("public/", "")}`;
     const bookData = {
       BookName: req.body.BookName,
       BookImage: filePath,
@@ -143,7 +144,8 @@ books.put(
   upload.single("BookImage"),
   (req, res) => {
     console.log("storage location is ", req.hostname + "/" + req.file.path);
-    const filePath = `${req.hostname}` + "/" + `${req.file.path}`;
+    const filePath =
+      `${req.hostname}` + "/" + `${req.file.path.replace("public/", "")}`;
     Book.update(
       {
         BookName: req.body.BookName,
